@@ -1,0 +1,84 @@
+<template>
+  <require from="./resources/value-converters/time"></require>
+  <require from="./resources/value-converters/percent"></require>
+  <require from="./resources/value-converters/seconds-in-days"></require>
+  <require from="./resources/value-converters/price"></require>
+
+  <div class="row">
+    <div class="col" style="border-right: 1px solid black">
+      Lagging indicator (in minutes)
+      <input class="form-control" value.bind="laggingTimeIndicatorInSecs"/>
+    </div>
+    <div class="col" style="border-right: 1px solid black">
+      Base fee %
+      <input class="form-control" value.bind="baseFeePercent"/>
+    </div>
+    <div class="col" style="border-right: 1px solid black">
+      Base spread fee %
+      <input class="form-control" value.bind="baseSpreadFeePercent"/>
+    </div>
+    <div class="col">
+      <button class="btn btn-primary" click.trigger="calculate()">
+        Recalculate
+      </button>
+      <button class="btn btn-primary" click.trigger="downloadAsCsv()">
+        Download
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col" style="border-right: 1px solid black">
+      <h3>Total time: ${totalTime | secondsInDays}</h3>
+    </div>
+    <div class="col" style="border-right: 1px solid black">
+      <h3>Total Fee %: ${totalFeePercent | percent}</h3>
+    </div>
+    <div class="col" style="border-right: 1px solid black">
+      <h3>Total Spread %: ${totalSpreadPercent | percent}</h3>
+    </div>
+    <div class="col">
+      <h3>Total Revenue %: ${totalRevenuePercent | percent}</h3>
+    </div>
+  </div>
+
+  <div class="row" style="border-top: 1px solid black">
+    <div class="col" style="border-right: 1px solid black">
+      <h3>Lowest Price: ${lowestLow | price}</h3>
+    </div>
+    <div class="col" style="border-right: 1px solid black">
+      <h3>Highest Price: ${highestLow | price}</h3>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <th>Time</th>
+      <th>Low</th>
+      <th>Rolling Low</th>
+      <th>Transaction</th>
+      <th>Spread</th>
+      <th>Fee</th>
+      <th>Total Spend</th>
+      <th>Total Spread</th>
+      <th>Total Fees</th>
+      <th>Total Revenue</th>
+      <th>Time as Low</th>
+    </thead>
+    <tbody>
+      <tr repeat.for="item of displayData">
+        <td>${item.time | time}</td>
+        <td>${item.low | price}</td>
+        <td>${item.lowest | price}</td>
+        <td>${item.transaction | price}</td>
+        <td>${item.spread | price}</td>
+        <td>${item.fee | price}</td>
+        <td>${item.totalSpend | price}</td>
+        <td>${item.totalSpread | price}</td>
+        <td>${item.totalFees | price}</td>
+        <td>${item.totalRevenue | price}</td>
+        <td>${item.timeAsLowest}</td>
+      </tr>
+    </tbody>
+  </table>
+</template>
